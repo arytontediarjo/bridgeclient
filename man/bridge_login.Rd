@@ -7,6 +7,9 @@
 bridge_login(study, email = NULL, password = NULL)
 }
 \arguments{
+\item{study}{The study identifier. Ask Alx Dark if you do not know this.
+For mPower 2, study = 'sage-mpower-2'. For MindKind, study = 'wellcome'.}
+
 \item{email}{Your email}
 
 \item{password}{Your Bridge password}

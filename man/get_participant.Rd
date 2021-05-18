@@ -4,11 +4,33 @@
 \alias{get_participant}
 \title{Get a study participant (user) record using the external ID of the account}
 \usage{
-get_participant(external_id)
+get_participant(
+  external_id = NULL,
+  health_code = NULL,
+  study_id = NULL,
+  user_id = NULL,
+  phone = NULL,
+  email = NULL
+)
 }
 \arguments{
 \item{external_id}{The external ID of the participant}
+
+\item{health_code}{The healthcode of the account to delete.}
+
+\item{study_id}{The study ID. Must be set with user_id
+to have an effect. Will use the v5 APIs (rather than v3).}
+
+\item{user_id}{The user ID of the account to delete.}
+
+\item{phone}{The participant's phone number.}
+
+\item{email}{The participant's email address.}
 }
 \description{
-Get a study participant (user) record using the external ID of the account
+All of the parameters are optional, but at least one participant
+identifier must be supplied. If multiple identifiers are supplied,
+only the first identifier (as determined by the function definition)
+will be used. If a phone number or email address is supplied, there
+can only be one matching user, else an error is thrown.
 }

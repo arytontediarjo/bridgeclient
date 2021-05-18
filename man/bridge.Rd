@@ -4,16 +4,16 @@
 \alias{bridge}
 \title{Make a REST call to Bridge}
 \usage{
-bridge(endpoint, method, body = NULL, ...)
+bridge(endpoint, method, debug = FALSE, ...)
 }
 \arguments{
-\item{endpoint}{Server endpoint.}
+\item{endpoint}{The API endpoint.}
 
-\item{method}{An HTTP verb function}
+\item{method}{An HTTP verb function.}
 
-\item{body}{The body of the request}
+\item{debug}{Whether to print the request string and body. FALSE by default.}
 
-\item{...}{named arguments to pass to \code{httr::modify_url}}
+\item{...}{named arguments to pass to \code{httr::modify_url}.}
 }
 \description{
 Make a REST call to Bridge

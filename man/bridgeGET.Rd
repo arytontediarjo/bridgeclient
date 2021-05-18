@@ -4,12 +4,15 @@
 \alias{bridgeGET}
 \title{Make a GET call to Bridge}
 \usage{
-bridgeGET(endpoint, ...)
+bridgeGET(endpoint, debug = FALSE, ...)
 }
 \arguments{
 \item{endpoint}{Server endpoint.}
 
-\item{...}{named arguments to pass to \code{httr::modify_url}}
+\item{debug}{Whether to print the request string and body. FALSE by default.}
+
+\item{...}{Either the body of the request or named arguments to
+pass to \code{httr::modify_url}.}
 }
 \description{
 Make a GET call to Bridge
