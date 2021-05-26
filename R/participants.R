@@ -136,3 +136,49 @@ delete_participant <- function(health_code=NULL, user_id=NULL) {
         "/v3/participants/{participant$id}"))
   return(response)
 }
+
+#' Create a Bridge account
+#'
+#' Creates a participant account tied to a phone number.
+#'
+#' @param phone_number The phone number associated with the account.
+#' @param email The email address associated with the account.
+#' @param study The study identifier.
+#' @param external_id The participant identifier.
+#' @param data_groups One or more data groups to assign this user to.
+#' @param phone_region_code The CLDR two-letter region code describing the
+#' region in which the phone number was issued. By default: "US".
+#' @param sharing_scope One of "no_sharing", "sponsors_and_partners",
+#' or "all_qualified_researchers". By default: "all_qualified_researchers".
+#' @export
+create_participant <- function(
+    phone_number = NULL,
+    email = NULL,
+    study = NULL,
+    external_id = NULL,
+    data_groups = NULL,
+    phone_region_code = "US",
+    sharing_scope = "all_qualified_researchers") {
+  if (is.null(phone_number) && is.null(email)) {
+    stop("Either a phone number or email is required.")
+  }
+  if (is.null(study) && !is.null(external_id) ||
+      !is.null(study) && is.null(external_id)) {
+    stop("Both a study and an external_id must be supplied.")
+  } else if (!is.null(study) && !is.null(external_id)) {
+    external_id_list <- list()
+    external_id_list[[study]] <- external_id
+  } else {
+    external_id_list <- NULL
+  }
+  response <- bridgePOST(
+      "/v3/participants",
+      body = list(
+        "externalIds" = external_id_list,
+        "checkForConsent" = FALSE,
+        "phone" = list("number" = phone_number,
+                       "regionCode" = phone_region_code),
+        "dataGroups" = data_groups,
+        "sharingScope" = sharing_scope))
+  return(response)
+}
