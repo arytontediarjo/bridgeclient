@@ -5,23 +5,23 @@
 \title{Get a study participant (user) record using the external ID of the account}
 \usage{
 get_participant(
+  user_id = NULL,
   external_id = NULL,
   health_code = NULL,
   study_id = NULL,
-  user_id = NULL,
   phone = NULL,
   email = NULL
 )
 }
 \arguments{
+\item{user_id}{The user ID of the account to delete.}
+
 \item{external_id}{The external ID of the participant}
 
 \item{health_code}{The healthcode of the account to delete.}
 
 \item{study_id}{The study ID. Must be set with user_id
 to have an effect. Will use the v5 APIs (rather than v3).}
-
-\item{user_id}{The user ID of the account to delete.}
 
 \item{phone}{The participant's phone number.}
 

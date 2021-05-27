@@ -6,16 +6,21 @@
 #' will be used. If a phone number or email address is supplied, there
 #' can only be one matching user, else an error is thrown.
 #'
+#' @param user_id The user ID of the account to delete.
 #' @param external_id The external ID of the participant
 #' @param health_code The healthcode of the account to delete.
-#' @param user_id The user ID of the account to delete.
 #' @param study_id The study ID. Must be set with user_id
 #' to have an effect. Will use the v5 APIs (rather than v3).
 #' @param phone The participant's phone number.
 #' @param email The participant's email address.
 #' @export
-get_participant <- function(external_id=NULL, health_code=NULL, study_id=NULL,
-                            user_id=NULL, phone=NULL, email=NULL) {
+get_participant <- function(
+    user_id=NULL,
+    external_id=NULL,
+    health_code=NULL,
+    study_id=NULL,
+    phone=NULL,
+    email=NULL) {
   if (is.null(external_id) && is.null(health_code) && is.null(user_id)
       && is.null(phone) && is.null(email)) {
     stop(glue::glue("One of `external_id`, `health_code`, `user_id`, `phone`,",
@@ -96,7 +101,10 @@ get_all_participants <- function() {
 #' @param study_id The study ID. Will use the v5 APIs (rather than v3).
 #' @return The first 100 search results.
 #' @export
-search_participants <- function(email=NULL, phone=NULL, study_id=NULL) {
+search_participants <- function(
+    email=NULL,
+    phone=NULL,
+    study_id=NULL) {
   if (is.null(email) && is.null(phone)) {
     stop("One of `email` or `phone` must be provided.")
   } else if (is.null(study_id)) {
@@ -120,10 +128,12 @@ search_participants <- function(email=NULL, phone=NULL, study_id=NULL) {
 #'
 #' Only users with a `test_user` data group may be deleted.
 #'
-#' @param health_code The healthcode of the account to delete.
 #' @param user_id The user ID of the account to delete.
+#' @param health_code The healthcode of the account to delete.
 #' @export
-delete_participant <- function(health_code=NULL, user_id=NULL) {
+delete_participant <- function(
+    user_id=NULL,
+    health_code=NULL) {
   if (is.null(health_code) && is.null(user_id)) {
     stop("One of `health_code` or `user_id` must be provided.")
   }

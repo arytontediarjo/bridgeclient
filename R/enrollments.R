@@ -6,8 +6,10 @@
 #' "test_user" data group.
 #' @return A list of accounts that are enrolled in that study.
 #' @export
-get_all_enrollments <- function(study_id, filter="all",
-                                include_testers=FALSE) {
+get_all_enrollments <- function(
+    study_id,
+    filter="all",
+    include_testers=FALSE) {
   offset_by <- 0
   page_size <- 100
   total_enrolled <- Inf

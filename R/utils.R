@@ -4,7 +4,10 @@
 #' @param debug Whether to print the request string and body. FALSE by default.
 #' @param ... Either the body of the request or named arguments to
 #' pass to \code{httr::modify_url}.
-bridgeGET <- function(endpoint, debug = FALSE, ...) {
+bridgeGET <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
   results <- bridge(endpoint = endpoint,
                     method = httr::GET,
                     debug = debug,
@@ -18,7 +21,10 @@ bridgeGET <- function(endpoint, debug = FALSE, ...) {
 #' @param debug Whether to print the request string and body. FALSE by default.
 #' @param ... Either the body of the request or named arguments to
 #' pass to \code{httr::modify_url}.
-bridgePOST <- function(endpoint, debug = FALSE, ...) {
+bridgePOST <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
   results <- bridge(endpoint = endpoint,
                     method = httr::POST,
                     debug = debug,
@@ -32,7 +38,10 @@ bridgePOST <- function(endpoint, debug = FALSE, ...) {
 #' @param debug Whether to print the request string and body. FALSE by default.
 #' @param ... Either the body of the request or named arguments to
 #' pass to \code{httr::modify_url}.
-bridgeDELETE <- function(endpoint, debug = FALSE, ...) {
+bridgeDELETE <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
   results <- bridge(endpoint = endpoint,
                     method = httr::DELETE,
                     debug = debug,
@@ -51,7 +60,10 @@ bridgeDELETE <- function(endpoint, debug = FALSE, ...) {
 #' @param email Your email
 #' @param password Your Bridge password
 #' @export
-bridge_login <- function(study, email = NULL, password = NULL) {
+bridge_login <- function(
+    study,
+    email = NULL,
+    password = NULL) {
   if (is.null(email) || is.null(password)) {
     credentials <- get_credentials()
   } else {
@@ -72,7 +84,11 @@ bridge_login <- function(study, email = NULL, password = NULL) {
 #' @param method An HTTP verb function.
 #' @param debug Whether to print the request string and body. FALSE by default.
 #' @param ... named arguments to pass to \code{httr::modify_url}.
-bridge <- function(endpoint, method, debug = FALSE, ...) {
+bridge <- function(
+    endpoint,
+    method,
+    debug = FALSE,
+    ...) {
   base_url <- "https://webservices.sagebridge.org"
   args <- list(...)
   url <- httr::modify_url(base_url, path = endpoint, scheme = args$scheme,

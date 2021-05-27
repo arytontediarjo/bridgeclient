@@ -4,12 +4,12 @@
 \alias{delete_participant}
 \title{Delete a Bridge account}
 \usage{
-delete_participant(health_code = NULL, user_id = NULL)
+delete_participant(user_id = NULL, health_code = NULL)
 }
 \arguments{
-\item{health_code}{The healthcode of the account to delete.}
-
 \item{user_id}{The user ID of the account to delete.}
+
+\item{health_code}{The healthcode of the account to delete.}
 }
 \description{
 Only users with a \code{test_user} data group may be deleted.
