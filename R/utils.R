@@ -69,12 +69,12 @@ bridge_login <- function(
   } else {
     credentials <- list(email = email, password = password)
   }
-  response <- bridgePOST(
+  content <- bridgePOST(
       "/v4/auth/signIn",
       body = list(study = study,
                   email = credentials$email,
                   password = credentials$password))
-  session_token <- httr::content(response)$sessionToken
+  session_token <- content$sessionToken
   Sys.setenv(BRIDGE_SESSION_TOKEN = session_token)
 }
 
@@ -109,10 +109,11 @@ bridge <- function(
                      httr::add_headers("Bridge-Session" = session_token),
                      body = args$body,
                      encode = "json")
+  content <- httr::content(response)
   if (httr::http_error(response)) {
-    stop(httr::content(response)$status)
+    stop(glue::glue(content$status, ": ", content$message))
   }
-  return(response)
+  return(content)
 }
 
 #' Fetch credentials from Bridge credentials file
