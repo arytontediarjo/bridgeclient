@@ -1,18 +1,51 @@
-#' Make a GET call to Bridge 
+#' Make a GET call to Bridge
 #'
 #' @param endpoint Server endpoint.
-#' @param ... named arguments to pass to \code{httr::modify_url}
-bridgeGET <- function(endpoint, ...) {
-  results <- bridge(endpoint = endpoint, method = httr::GET, ...)
+#' @param debug Whether to print the request string and body. FALSE by default.
+#' @param ... Either the body of the request or named arguments to
+#' pass to \code{httr::modify_url}.
+bridgeGET <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
+  results <- bridge(endpoint = endpoint,
+                    method = httr::GET,
+                    debug = debug,
+                    ...)
   return(results)
 }
 
 #' Make a POST call to Bridge
 #'
 #' @param endpoint Server endpoint.
-#' @param ... named arguments to pass to \code{httr::modify_url}
-bridgePOST <- function(endpoint, ...) {
-  results <- bridge(endpoint = endpoint, method = httr::POST, ...)
+#' @param debug Whether to print the request string and body. FALSE by default.
+#' @param ... Either the body of the request or named arguments to
+#' pass to \code{httr::modify_url}.
+bridgePOST <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
+  results <- bridge(endpoint = endpoint,
+                    method = httr::POST,
+                    debug = debug,
+                    ...)
+  return(results)
+}
+
+#' Make a DELETE call to Bridge
+#'
+#' @param endpoint Server endpoint.
+#' @param debug Whether to print the request string and body. FALSE by default.
+#' @param ... Either the body of the request or named arguments to
+#' pass to \code{httr::modify_url}.
+bridgeDELETE <- function(
+    endpoint,
+    debug = FALSE,
+    ...) {
+  results <- bridge(endpoint = endpoint,
+                    method = httr::DELETE,
+                    debug = debug,
+                    ...)
   return(results)
 }
 
@@ -22,30 +55,40 @@ bridgePOST <- function(endpoint, ...) {
 #' a YAML file with the name \code{.bridgeCredentials} in your home (~) directory.
 #' This file should have keys \code{email} and \code{password}.
 #'
+#' @param study The study identifier. Ask Alx Dark if you do not know this.
+#' For mPower 2, study = 'sage-mpower-2'. For MindKind, study = 'wellcome'.
 #' @param email Your email
 #' @param password Your Bridge password
 #' @export
-bridge_login <- function(study, email = NULL, password = NULL) {
+bridge_login <- function(
+    study,
+    email = NULL,
+    password = NULL) {
   if (is.null(email) || is.null(password)) {
     credentials <- get_credentials()
   } else {
     credentials <- list(email = email, password = password)
   }
-  response <- bridgePOST("/v4/auth/signIn",
-                      body = list(study = study,
-                                  email = credentials$email,
-                                  password = credentials$password))
+  response <- bridgePOST(
+      "/v4/auth/signIn",
+      body = list(study = study,
+                  email = credentials$email,
+                  password = credentials$password))
   session_token <- httr::content(response)$sessionToken
   Sys.setenv(BRIDGE_SESSION_TOKEN = session_token)
 }
 
 #' Make a REST call to Bridge
 #'
-#' @param endpoint Server endpoint.
-#' @param method An HTTP verb function
-#' @param body The body of the request
-#' @param ... named arguments to pass to \code{httr::modify_url}
-bridge <- function(endpoint, method, body = NULL, ...) {
+#' @param endpoint The API endpoint.
+#' @param method An HTTP verb function.
+#' @param debug Whether to print the request string and body. FALSE by default.
+#' @param ... named arguments to pass to \code{httr::modify_url}.
+bridge <- function(
+    endpoint,
+    method,
+    debug = FALSE,
+    ...) {
   base_url <- "https://webservices.sagebridge.org"
   args <- list(...)
   url <- httr::modify_url(base_url, path = endpoint, scheme = args$scheme,
@@ -53,12 +96,19 @@ bridge <- function(endpoint, method, body = NULL, ...) {
                           query = args$query, params = args$params,
                           fragment = args$fragment, username = args$username,
                           password = args$password)
+  if (debug) {
+    debug_str <- glue::glue(
+        "URL:", url,
+        "args:", args,
+        .sep = "\n")
+    message(debug_str)
+  }
   session_token <- get_session_token()
   response <- method(url,
                      httr::user_agent("https://github.com/philerooski/bridgeclient"),
                      httr::add_headers("Bridge-Session" = session_token),
-                     body = body,
-                     encode="json")
+                     body = args$body,
+                     encode = "json")
   if (httr::http_error(response)) {
     stop(httr::content(response)$status)
   }
