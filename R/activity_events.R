@@ -3,8 +3,8 @@
 #' @param user_id The user ID of the participant
 #' @export
 get_activity_events <- function(user_id) {
-  response <- bridgeGET(
+  content <- bridgeGET(
     glue::glue("/v3/participants/{user_id}/activityEvents"))
-  content <- httr::content(response)
+  content <- httr::content(content)
   return(content$items)
 }

@@ -29,23 +29,23 @@ get_participant <- function(
   tryCatch({
     if (!is.null(user_id)) {
       if (is.null(study_id)) {
-        response <- bridgeGET(glue::glue(
+        participant <- bridgeGET(glue::glue(
             "/v3/participants/{user_id}"))
       } else {
-        response <- bridgeGET(glue::glue(
+        participant <- bridgeGET(glue::glue(
             "/v5/studies/{study_id}/participants/{user_id}"))
       }
     } else if (!is.null(external_id)) {
       if (is.null(study_id)) {
-        response <- bridgeGET(glue::glue(
+        participant <- bridgeGET(glue::glue(
             "/v3/participants/externalId:{external_id}"))
       } else {
         search_results
-        response <- bridgeGET(glue::glue(
+        participant <- bridgeGET(glue::glue(
             "/v5/studies/{study_id}/participants/{user_id}"))
       }
     } else if (!is.null(health_code)) {
-      response <- bridgeGET(glue::glue(
+      participant <- bridgeGET(glue::glue(
           "/v3/participants/healthCode:{health_code}"))
     } else if (!is.null(phone) || !is.null(email)) {
       search_results <- search_participants(
@@ -61,7 +61,6 @@ get_participant <- function(
                         "phone number or email address."))
       }
     }
-    participant <- httr::content(response)
     return(participant)
   }, error = function(e) {
       stop(message(e))
@@ -80,11 +79,10 @@ get_all_participants <- function() {
   total_participants <- Inf
   all_participants <- list()
   while (offset_by <= total_participants) {
-    response <- bridgeGET(
+    these_participants <- bridgeGET(
         endpoint = "/v3/participants",
         query = list(offsetBy = offset_by,
                      pageSize = page_size))
-    these_participants <- httr::content(response)
     all_participants <- c(all_participants, these_participants[[1]])
     total_participants <- these_participants$total
     offset_by <- offset_by + page_size
@@ -108,19 +106,18 @@ search_participants <- function(
   if (is.null(email) && is.null(phone)) {
     stop("One of `email` or `phone` must be provided.")
   } else if (is.null(study_id)) {
-    response <- bridgePOST(
+    search_results <- bridgePOST(
         endpoint = glue::glue("/v3/participants/search"),
         body = list(phoneFilter = phone,
                     emailFilter = email,
                     pageSize = 100))
   } else {
-    response <- bridgePOST(
+    search_results <- bridgePOST(
         endpoint = glue::glue("/v5/studies/{study_id}/participants/search"),
         body = list(phoneFilter = phone,
                     emailFilter = email,
                     pageSize = 100))
   }
-  search_results <- httr::content(response)
   return(search_results)
 }
 
@@ -142,14 +139,14 @@ delete_participant <- function(
   if (!("test_user" %in% participant$dataGroups)) {
     stop("This participant is not in the `test_user` data group.")
   }
-  response <- bridgeDELETE(glue::glue(
+  content <- bridgeDELETE(glue::glue(
         "/v3/participants/{participant$id}"))
-  return(response)
+  return(content)
 }
 
 #' Create a Bridge account
 #'
-#' Creates a participant account tied to a phone number.
+#' Creates a participant account tied to a phone number or email address.
 #'
 #' @param phone_number The phone number associated with the account.
 #' @param email The email address associated with the account.
@@ -181,7 +178,7 @@ create_participant <- function(
   } else {
     external_id_list <- NULL
   }
-  response <- bridgePOST(
+  content <- bridgePOST(
       "/v3/participants",
       body = list(
         "externalIds" = external_id_list,
@@ -190,5 +187,5 @@ create_participant <- function(
                        "regionCode" = phone_region_code),
         "dataGroups" = data_groups,
         "sharingScope" = sharing_scope))
-  return(response)
+  return(content)
 }

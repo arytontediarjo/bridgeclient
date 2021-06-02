@@ -15,13 +15,12 @@ get_all_enrollments <- function(
   total_enrolled <- Inf
   all_enrollments <- list()
   while (offset_by <= total_enrolled) {
-    response <- bridgeGET(
+    these_enrollments <- bridgeGET(
         endpoint = glue::glue("/v5/studies/{study_id}/enrollments"),
         query = list(offsetBy = offset_by,
                      pageSize = page_size,
                      enrollmentFilter = filter,
                      includeTesters = include_testers))
-    these_enrollments <- httr::content(response)
     all_enrollments <- c(all_enrollments, these_enrollments[[1]])
     total_enrolled <- these_enrollments$total
     offset_by <- offset_by + page_size
