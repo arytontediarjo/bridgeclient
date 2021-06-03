@@ -185,7 +185,7 @@ create_participant <- function(
         "checkForConsent" = FALSE,
         "phone" = list("number" = phone_number,
                        "regionCode" = phone_region_code),
-        "dataGroups" = data_groups,
+        "dataGroups" = as.list(data_groups),
         "sharingScope" = sharing_scope))
   return(content)
 }
