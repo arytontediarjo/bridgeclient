@@ -53,8 +53,8 @@ get_participant <- function(
           email = email,
           study_id = study_id)
       if (search_results$total == 1) {
-        return(get_participant(
-            user_id = search_results[[1]][[1]]$id),
+        participant <- get_participant(
+            user_id = search_results[[1]][[1]]$id,
             study_id = study_id)
       } else {
         stop(glue::glue("Either more than one or zero participants have that ",
