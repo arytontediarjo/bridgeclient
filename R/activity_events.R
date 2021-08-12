@@ -5,6 +5,5 @@
 get_activity_events <- function(user_id) {
   content <- bridgeGET(
     glue::glue("/v3/participants/{user_id}/activityEvents"))
-  content <- httr::content(content)
   return(content$items)
 }
