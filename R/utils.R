@@ -52,20 +52,22 @@ bridgeDELETE <- function(
 #' Log in to Bridge
 #'
 #' Log in by inputting your username and password or cache your credentials in
-#' a YAML file with the name \code{.bridgeCredentials} in your home (~) directory.
-#' This file should have keys \code{email} and \code{password}.
+#' a YAML file at \code{credentials_file}.
+#' The YAML file should have keys \code{email} and \code{password}.
 #'
 #' @param study The study identifier. Ask Alx Dark if you do not know this.
 #' For mPower 2, study = 'sage-mpower-2'. For MindKind, study = 'wellcome'.
 #' @param email Your email
 #' @param password Your Bridge password
+#' @param credentials_file Path to the YAML file with credentials
 #' @export
 bridge_login <- function(
     study,
     email = NULL,
-    password = NULL) {
+    password = NULL,
+    credentials_file = "~/.bridgeCredentials") {
   if (is.null(email) || is.null(password)) {
-    credentials <- get_credentials()
+    credentials <- get_credentials(path = credentials_file)
   } else {
     credentials <- list(email = email, password = password)
   }
@@ -119,7 +121,7 @@ bridge <- function(
 #' Fetch credentials from Bridge credentials file
 #'
 #' @return A list with elements \code{email} and \code{password}
-get_credentials <- function(path = "~/.bridgeCredentials") {
+get_credentials <- function(path) {
   credentials <- yaml::read_yaml(path)
   return(credentials)
 }

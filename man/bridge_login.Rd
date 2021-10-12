@@ -4,7 +4,12 @@
 \alias{bridge_login}
 \title{Log in to Bridge}
 \usage{
-bridge_login(study, email = NULL, password = NULL)
+bridge_login(
+  study,
+  email = NULL,
+  password = NULL,
+  credentials_file = "~/.bridgeCredentials"
+)
 }
 \arguments{
 \item{study}{The study identifier. Ask Alx Dark if you do not know this.
@@ -13,9 +18,11 @@ For mPower 2, study = 'sage-mpower-2'. For MindKind, study = 'wellcome'.}
 \item{email}{Your email}
 
 \item{password}{Your Bridge password}
+
+\item{credentials_file}{Path to the YAML file with credentials}
 }
 \description{
 Log in by inputting your username and password or cache your credentials in
-a YAML file with the name \code{.bridgeCredentials} in your home (~) directory.
-This file should have keys \code{email} and \code{password}.
+a YAML file at \code{credentials_file}.
+The YAML file should have keys \code{email} and \code{password}.
 }
