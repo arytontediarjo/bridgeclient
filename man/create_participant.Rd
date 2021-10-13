@@ -32,5 +32,5 @@ region in which the phone number was issued. By default: "US".}
 or "all_qualified_researchers". By default: "all_qualified_researchers".}
 }
 \description{
-Creates a participant account tied to a phone number.
+Creates a participant account tied to a phone number or email address.
 }

@@ -4,7 +4,7 @@
 \alias{get_credentials}
 \title{Fetch credentials from Bridge credentials file}
 \usage{
-get_credentials(path = "~/.bridgeCredentials")
+get_credentials(path)
 }
 \value{
 A list with elements \code{email} and \code{password}
