@@ -119,6 +119,8 @@ bridge <- function(
 }
 
 #' Fetch credentials from Bridge credentials file
+#' 
+#' @param path yaml_path to credentials
 #'
 #' @return A list with elements \code{email} and \code{password}
 get_credentials <- function(path) {

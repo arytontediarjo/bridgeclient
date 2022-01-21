@@ -6,6 +6,9 @@
 \usage{
 get_credentials(path)
 }
+\arguments{
+\item{path}{yaml_path to credentials}
+}
 \value{
 A list with elements \code{email} and \code{password}
 }
