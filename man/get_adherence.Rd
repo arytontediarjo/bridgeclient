@@ -12,7 +12,7 @@ get_adherence(study_id, user_id)
 \item{user_id}{the Bridge User ID}
 }
 \value{
-key-value-pair of adherence
+response from Bridge adherence/activityStreams endpoint
 }
 \description{
 Endpoint to gather user adherence from Bridge

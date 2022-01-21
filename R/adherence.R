@@ -2,7 +2,8 @@
 #' 
 #' @param study_id the Bridge Study ID
 #' @param user_id the Bridge User ID
-#' @return key-value-pair of adherence
+#' 
+#' @return response from Bridge adherence/activityStreams endpoint
 #' 
 #' @export
 get_adherence <- function(study_id, user_id){
