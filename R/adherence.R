@@ -12,10 +12,8 @@ get_adherence <- function(study_id, user_id){
     }
     tryCatch({
         bridgeGET(
-            glue("/v5/studies/{study_id}/participants/{user_id}/adherence/eventstream"))
+            glue::glue("/v5/studies/{study_id}/participants/{user_id}/adherence/eventstream"))
     }, error = function(e){
-        stop(glue::glue("Adherence from following ",
-                        "study_id: {study_id} and user_id: {user_id} ",
-                        "is not found"))
+        stop(e$message)
     })
 }

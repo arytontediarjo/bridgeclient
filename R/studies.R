@@ -1,10 +1,11 @@
 #' Function to get studies of Bridge App
 #' 
 #' @return response from Bridge /studies endpoint
+#' @export
 get_studies <- function(){
     tryCatch({
         bridgeclient:::bridgeGET("/v5/studies") %>% .$items
     }, error = function(e){
-        glue::glue("study not available in Bridge App")
+        e$message
     })
 }
